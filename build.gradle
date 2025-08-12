@@ -1,19 +1,42 @@
 plugins {
-    id 'java'
+
+	id 'java'
+	id 'com.diffplug.spotless' version '7.2.1'
 }
 
 group = 'com.github.can019'
 version = '1.0-SNAPSHOT'
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation platform('org.junit:junit-bom:5.10.0')
+	testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {
-    useJUnitPlatform()
+	useJUnitPlatform()
+}
+
+spotless {
+	// Java 코드 포맷팅 설정
+	java {
+		// google-java-format을 사용 (버전은 최신 버전으로 변경 가능)
+		googleJavaFormat('1.17.0')
+		// import 문을 알파벳 순으로 정렬
+		importOrder()
+		// 파일 끝에 빈 줄 추가
+		endWithNewline()
+	}
+
+	// Maven Wrapper 스크립트 포맷팅 (선택 사항)
+	// mvnw, mvnw.cmd 파일에 대한 LF/CRLF 설정
+	format 'misc', {
+		target '**/*.gradle', '**/*.md', '**/.gitignore'
+		trimTrailingWhitespace()
+		indentWithTabs()
+		endWithNewline()
+	}
 }
